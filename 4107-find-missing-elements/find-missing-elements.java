@@ -2,12 +2,18 @@ import java.util.*;
 
 class Solution {
     public List<Integer> findMissingElements(int[] nums) {
-        Arrays.sort(nums);
+        Set<Integer> set = new HashSet<>();
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+
+        for (int num : nums) {
+            set.add(num);
+            min = Math.min(min, num);
+            max = Math.max(max, num);
+        }
+
         List<Integer> ans = new ArrayList<>();
-        
-        for (int i = 1; i < nums.length; i++) {
-            // If there is a gap between nums[i-1] and nums[i]
-            for (int val = nums[i-1] + 1; val < nums[i]; val++) {
+        for (int val = min; val <= max; val++) {
+            if (!set.contains(val)) {
                 ans.add(val);
             }
         }
