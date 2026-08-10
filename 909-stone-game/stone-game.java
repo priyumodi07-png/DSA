@@ -1,13 +1,17 @@
+import java.util.*;
+
 class Solution {
     public boolean stoneGame(int[] piles) {
-       Integer[][]arr=new Integer[piles.length][piles.length];
-        return helper(piles,0,piles.length-1,arr)>=0;
-    }
-    public static int helper(int[]arr,int start,int end,Integer[][]dp){
-        if(start==end)return arr[start];
-        if(dp[start][end]!=null)return dp[start][end];
-        int takeStart=arr[start]-helper(arr,start+1,end,dp);
-        int takeEnd=arr[end]-helper(arr,start,end-1,dp);
-        return dp[start][end]=Math.max(takeStart,takeEnd);
+        int n = piles.length;
+        int[] dp = Arrays.copyOf(piles, n); // base case: dp[i] = piles[i]
+
+        // Fill DP table bottom-up
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                dp[j] = Math.max(piles[i] - dp[j], piles[j] - dp[j - 1]);
+            }
+        }
+
+        return dp[n - 1] > 0; // if score difference > 0, first player wins
     }
 }
