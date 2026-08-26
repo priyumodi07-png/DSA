@@ -1,37 +1,30 @@
 class Solution {
     public String shortestBeautifulSubstring(String s, int k) {
-        String ans = "";
         int n = s.length();
-
-        for (int i = 0; i < n; i++) {
-
-            int oneCnt = 0;
-            StringBuilder cur = new StringBuilder();
-
-            for (int j = i; j < n; j++) {
-
-                cur.append(s.charAt(j));
-
-                if (s.charAt(j) == '1')
-                    oneCnt++;
-
-                // More than k ones can never become valid again
-                if (oneCnt > k)
+        int val = Integer.MAX_VALUE;
+        String ans = "";
+        for(int i=0;i<n;i++){
+            int ones = 0;
+            String check = "";
+            int count1 = 0;
+            for(int j=i;j<n;j++){
+                char ch = s.charAt(j);
+                check+=ch;
+                
+                if(ch=='1'){
+                    ones++;
+                }
+                if(ones>k){
                     break;
-
-                if (oneCnt == k) {
-                    String curStr = cur.toString();
-
-                    if (ans.isEmpty() ||
-                        curStr.length() < ans.length() ||
-                        (curStr.length() == ans.length() && curStr.compareTo(ans) < 0)) {
-
-                        ans = curStr;
+                }
+                if(ones==k){
+                    if(check.length()<val || check.length()==val && check.compareTo(ans)<0){
+                        val = check.length();
+                        ans = check;
                     }
                 }
             }
         }
-
         return ans;
     }
 }
