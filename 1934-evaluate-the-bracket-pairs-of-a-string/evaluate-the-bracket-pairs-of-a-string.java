@@ -1,29 +1,32 @@
 class Solution {
     public String evaluate(String s, List<List<String>> knowledge) {
-        HashMap<String,String> h= new HashMap<>();
-         for (List<String> l:knowledge) {
-            h.put(l.get(0),l.get(1));
+        Map<String, String> map = new HashMap<>();
+        for (List<String> pair : knowledge) {
+            map.put(pair.get(0), pair.get(1));
         }
-        String ans="";
-        for(int i=0;i<s.length();i++){
-            char ch=s.charAt(i);
-            if(ch=='('){
-                i++;
-                String r="";
-                while(s.charAt(i)!=')' && i<s.length()){
-                    r+=s.charAt(i);
-                    i++;
+
+        StringBuilder result = new StringBuilder();
+        StringBuilder key = new StringBuilder();
+        boolean inBracket = false;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            
+            if (c == '(') {
+                inBracket = true;
+                key.setLength(0);
+            } else if (c == ')') {
+                inBracket = false;
+                result.append(map.getOrDefault(key.toString(), "?"));
+            } else {
+                if (inBracket) {
+                    key.append(c);
+                } else {
+                    result.append(c);
                 }
-                //System.out.println(r);
-                if(h.containsKey(r)){
-                    ans+=h.get(r);
-                }
-                else
-                    ans+="?";
             }
-            else
-                ans+=ch;
         }
-        return ans;
+
+        return result.toString();
     }
 }
